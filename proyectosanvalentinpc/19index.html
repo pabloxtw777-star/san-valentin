@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi San Valentín ❤️</title>
+    <style>
+        :root {
+            --rosa-fuerte: #ff4d6d;
+        }
+
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, #ffe5ec 0%, #ffb3c1 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Zona de movimiento controlada */
+        .game-zone {
+            width: 600px;
+            height: 600px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .content { z-index: 10; }
+
+        .foto-perfil {
+            width: 280px;
+            height: 280px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 { 
+            color: #c9184a; 
+            font-size: 2.2rem; 
+            margin: 10px 0;
+        }
+
+        #si { 
+            padding: 15px 40px;
+            background: var(--rosa-fuerte); 
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        /* BOTÓN NO: Dimensiones bloqueadas para que no se agrade */
+        #no {
+            position: absolute;
+            z-index: 100;
+            /* BLOQUEO DE TAMAÑO */
+            width: 110px !important; 
+            height: 50px !important;
+            min-width: 110px !important;
+            max-width: 110px !important;
+            padding: 0 !important; /* Quitamos padding para que no empuje las paredes */
+            
+            background: white;
+            color: var(--rosa-fuerte);
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: top 0.1s ease, left 0.1s ease; /* Solo animamos el movimiento */
+            
+            /* Posición inicial */
+            top: 500px;
+            left: 350px;
+        }
+
+        .heart {
+            position: fixed;
+            top: -20px;
+            animation: fall linear forwards;
+            z-index: 1;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="game-zone" id="zona">
+        <div class="content" id="principal">
+            <img class="foto-perfil" src="mi_foto.jpg" alt="San Valentin">
+            <h1>¿Quieres ser mi San Valentín? ❤️</h1>
+            <button id="si" onclick="aceptar()">¡SÍ! 😍</button>
+        </div>
+
+        <button id="no" onmouseover="huir()">No 😢</button>
+    </div>
+
+    <script>
+        function huir() {
+            const btnNo = document.getElementById('no');
+            const zona = document.getElementById('zona');
+            
+            // Calculamos límites restando el tamaño fijo del botón
+            const maxX = zona.clientWidth - 110; 
+            const maxY = zona.clientHeight - 50;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            btnNo.style.left = randomX + "px";
+            btnNo.style.top = randomY + "px";
+        }
+
+        function aceptar() {
+            const principal = document.getElementById('principal');
+            const btnNo = document.getElementById('no');
+            if(btnNo) btnNo.remove();
+            principal.innerHTML = `
+                <h1 style="font-size: 5rem; margin: 0;">💖</h1>
+                <h1>¡Me la Fokin Pela!</h1>
+                <p style="color:#c9184a; font-weight:bold; font-size:1.5rem;">¡Nos vemos el 14! ✨</p>
+            `;
+            setInterval(crearCorazon, 100);
+        }
+
+        function crearCorazon() {
+            const h = document.createElement('div');
+            h.classList.add('heart');
+            h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            h.style.animationDuration = (Math.random() * 2 + 3) + 's';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 5000);
+        }
+    </script>
+</body>
+</html>
